@@ -6,5 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/PhotoTool/PhotoToolScene.unity
-    guid: 7324426c15e5a85429a30cbddadcbc5a
+    path: Assets/DESKTOP_DEMOS/BasicObjectsDemo/ObjectsDemoScene.unity
+    guid: b835d5ef246aa49468b8059bacdad181
+  m_configObjects: {}

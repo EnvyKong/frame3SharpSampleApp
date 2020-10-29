@@ -46,17 +46,17 @@ class SetupObjectsDemoCockpit : ICockpitInitializer
             MaterialUtil.CreateStandardMaterial(bgColor) : MaterialUtil.CreateTransparentMaterial(bgColor);
         Material primMaterial = MaterialUtil.CreateStandardMaterial(Color.yellow);
 
-        DropPrimitiveButton cylinderButton =
-            create_primitive_button(cockpit, "create_cylinder", buttonDiam / 2,
-                PrimitiveType.Cylinder, SOTypes.Cylinder, 0.7f, bgMaterial, primMaterial,
-                () => { return new CylinderSO().Create(cockpit.Scene.DefaultSOMaterial); });
-        primitives_list.AddListItem(cylinderButton);
-
-        DropPrimitiveButton boxButton =
-            create_primitive_button(cockpit, "create_box", buttonDiam / 2,
-                PrimitiveType.Cube, SOTypes.Box, 0.8f, bgMaterial, primMaterial,
-                () => { return new BoxSO().Create(cockpit.Scene.DefaultSOMaterial); });
-        primitives_list.AddListItem(boxButton);
+        // DropPrimitiveButton cylinderButton =
+        //     create_primitive_button(cockpit, "create_cylinder", buttonDiam / 2,
+        //         PrimitiveType.Cylinder, SOTypes.Cylinder, 0.7f, bgMaterial, primMaterial,
+        //         () => { return new CylinderSO().Create(cockpit.Scene.DefaultSOMaterial); });
+        // primitives_list.AddListItem(cylinderButton);
+        //
+        // DropPrimitiveButton boxButton =
+        //     create_primitive_button(cockpit, "create_box", buttonDiam / 2,
+        //         PrimitiveType.Cube, SOTypes.Box, 0.8f, bgMaterial, primMaterial,
+        //         () => { return new BoxSO().Create(cockpit.Scene.DefaultSOMaterial); });
+        // primitives_list.AddListItem(boxButton);
 
 
         primitives_list.Create();
@@ -82,15 +82,15 @@ class SetupObjectsDemoCockpit : ICockpitInitializer
 
         // buttons for draw-primitive tool and cancel-tool button
 
-        ActivateToolButton drawPrimButton = create_tool_button(cockpit, DrawPrimitivesTool.Identifier,
-            buttonDiam/2, bgMaterial, primMaterial,
-            new toolInfo() { identifier = DrawPrimitivesTool.Identifier, sMeshPath = "draw_primitive", fMeshScaleFudge = 1.2f });
-        tool_buttons_list.AddListItem(drawPrimButton);
-
-        ActivateToolButton cancelButton = create_tool_button(cockpit, "cancel",
-            buttonDiam / 2, bgMaterial, primMaterial,
-            new toolInfo() { identifier = "cancel", sMeshPath = "cancel", fMeshScaleFudge = 1.2f });
-        tool_buttons_list.AddListItem(cancelButton);
+        // ActivateToolButton drawPrimButton = create_tool_button(cockpit, DrawPrimitivesTool.Identifier,
+        //     buttonDiam/2, bgMaterial, primMaterial,
+        //     new toolInfo() { identifier = DrawPrimitivesTool.Identifier, sMeshPath = "draw_primitive", fMeshScaleFudge = 1.2f });
+        // tool_buttons_list.AddListItem(drawPrimButton);
+        //
+        // ActivateToolButton cancelButton = create_tool_button(cockpit, "cancel",
+        //     buttonDiam / 2, bgMaterial, primMaterial,
+        //     new toolInfo() { identifier = "cancel", sMeshPath = "cancel", fMeshScaleFudge = 1.2f });
+        // tool_buttons_list.AddListItem(cancelButton);
 
         tool_buttons_list.Create();
         tool_buttons_list.Name = "tool_button_bar";
@@ -168,33 +168,33 @@ class SetupObjectsDemoCockpit : ICockpitInitializer
     }
 
 
-    DropPrimitiveButton create_primitive_button(Cockpit cockpit, string sName, float fRadius,
-        PrimitiveType primType, SOType soType, float fPrimRadiusScale,
-        Material bgMaterial, Material primMaterial,
-        Func<SceneObject> CreatePrimitiveF,
-        IGameObjectGenerator customGenerator = null
-        )
-    {
-        DropPrimitiveButton button = new DropPrimitiveButton() {
-            TargetScene = cockpit.Scene,
-            CreatePrimitive = CreatePrimitiveF
-        };
-        button.Create(fRadius, bgMaterial);
-        var gen = (customGenerator != null) ? customGenerator :
-            new primitiveIconGenerator() { PrimType = primType, PrimMaterial = primMaterial, PrimSize = fRadius * fPrimRadiusScale };
-        button.AddVisualElements(gen.Generate(), true);
-        button.Name = sName;
-        button.OnClicked += (s, e) => {
-            cockpit.Scene.DefaultPrimitiveType = soType;
-        };
-        button.OnDoubleClicked += (s, e) => {
-            // [TODO] could have a lighter record here because we can easily recreate primitive...
-            cockpit.Scene.History.PushChange(
-                new AddSOChange() { scene = cockpit.Scene, so = CreatePrimitiveF() });
-            cockpit.Scene.History.PushInteractionCheckpoint();
-        };
-        return button;
-    }
+    // DropPrimitiveButton create_primitive_button(Cockpit cockpit, string sName, float fRadius,
+    //     PrimitiveType primType, SOType soType, float fPrimRadiusScale,
+    //     Material bgMaterial, Material primMaterial,
+    //     Func<SceneObject> CreatePrimitiveF,
+    //     IGameObjectGenerator customGenerator = null
+    //     )
+    // {
+    //     DropPrimitiveButton button = new DropPrimitiveButton() {
+    //         TargetScene = cockpit.Scene,
+    //         CreatePrimitive = CreatePrimitiveF
+    //     };
+    //     button.Create(fRadius, bgMaterial);
+    //     var gen = (customGenerator != null) ? customGenerator :
+    //         new primitiveIconGenerator() { PrimType = primType, PrimMaterial = primMaterial, PrimSize = fRadius * fPrimRadiusScale };
+    //     button.AddVisualElements(gen.Generate(), true);
+    //     button.Name = sName;
+    //     button.OnClicked += (s, e) => {
+    //         cockpit.Scene.DefaultPrimitiveType = soType;
+    //     };
+    //     button.OnDoubleClicked += (s, e) => {
+    //         // [TODO] could have a lighter record here because we can easily recreate primitive...
+    //         cockpit.Scene.History.PushChange(
+    //             new AddSOChange() { scene = cockpit.Scene, so = CreatePrimitiveF() });
+    //         cockpit.Scene.History.PushInteractionCheckpoint();
+    //     };
+    //     return button;
+    // }
 
 
 
@@ -204,42 +204,42 @@ class SetupObjectsDemoCockpit : ICockpitInitializer
         public string sMeshPath;
         public float fMeshScaleFudge;
     }
-    ActivateToolButton[] activeButtons = new ActivateToolButton[2];
-
-    ActivateToolButton create_tool_button(Cockpit cockpit, string sName,
-        float fButtonRadius,
-        Material bgMaterial, Material activeMaterial, toolInfo info)
-    {
-        ActivateToolButton button = new ActivateToolButton() {
-            TargetScene = cockpit.Scene,
-            ToolType = info.identifier
-        };
-        button.CreateMeshIconButton(fButtonRadius, info.sMeshPath, bgMaterial, info.fMeshScaleFudge);
-        //HUDUtil.PlaceInSphere(button, fHUDRadius, dx, dy);
-        button.Name = sName;
-
-        if (info.identifier == "cancel") {
-            button.OnClicked += (s, e) => {
-                int nSide = InputState.IsHandedDevice(e.device) ? (int)e.side : 1;
-                cockpit.Context.ToolManager.DeactivateTool((ToolSide)nSide);
-                if (activeButtons[nSide] != null) {
-                    activeButtons[nSide].SetBackgroundMaterial(bgMaterial);
-                    activeButtons[nSide] = null;
-                }
-            };
-        } else {
-            button.OnClicked += (s, e) => {
-                int nSide = InputState.IsHandedDevice(e.device) ? (int)e.side : 1;
-                cockpit.Context.ToolManager.SetActiveToolType(info.identifier, (ToolSide)nSide);
-                cockpit.Context.ToolManager.ActivateTool((ToolSide)nSide);
-                if (activeButtons[nSide] != null)
-                    activeButtons[nSide].SetBackgroundMaterial(bgMaterial);
-                activeButtons[nSide] = button;
-                button.SetBackgroundMaterial(activeMaterial);
-            };
-        }
-        return button;
-    }
+    // ActivateToolButton[] activeButtons = new ActivateToolButton[2];
+    //
+    // ActivateToolButton create_tool_button(Cockpit cockpit, string sName,
+    //     float fButtonRadius,
+    //     Material bgMaterial, Material activeMaterial, toolInfo info)
+    // {
+    //     ActivateToolButton button = new ActivateToolButton() {
+    //         TargetScene = cockpit.Scene,
+    //         ToolType = info.identifier
+    //     };
+    //     button.CreateMeshIconButton(fButtonRadius, info.sMeshPath, bgMaterial, info.fMeshScaleFudge);
+    //     //HUDUtil.PlaceInSphere(button, fHUDRadius, dx, dy);
+    //     button.Name = sName;
+    //
+    //     if (info.identifier == "cancel") {
+    //         button.OnClicked += (s, e) => {
+    //             int nSide = InputState.IsHandedDevice(e.device) ? (int)e.side : 1;
+    //             cockpit.Context.ToolManager.DeactivateTool((ToolSide)nSide);
+    //             if (activeButtons[nSide] != null) {
+    //                 activeButtons[nSide].SetBackgroundMaterial(bgMaterial);
+    //                 activeButtons[nSide] = null;
+    //             }
+    //         };
+    //     } else {
+    //         button.OnClicked += (s, e) => {
+    //             int nSide = InputState.IsHandedDevice(e.device) ? (int)e.side : 1;
+    //             cockpit.Context.ToolManager.SetActiveToolType(info.identifier, (ToolSide)nSide);
+    //             cockpit.Context.ToolManager.ActivateTool((ToolSide)nSide);
+    //             if (activeButtons[nSide] != null)
+    //                 activeButtons[nSide].SetBackgroundMaterial(bgMaterial);
+    //             activeButtons[nSide] = button;
+    //             button.SetBackgroundMaterial(activeMaterial);
+    //         };
+    //     }
+    //     return button;
+    // }
 
 
 

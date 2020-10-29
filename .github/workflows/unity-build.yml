@@ -68,7 +68,7 @@ jobs:
           #projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: StandaloneOSX
-          #buildMethod: Builder.BuildOSX
+          buildMethod: Builder.BuildOSX
           #customParameters: '-myParameter myValue -myBoolean -ThirdParameter andItsValue'
 
       # - uses: actions/upload-artifact@v2
