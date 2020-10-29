@@ -1,0 +1,77 @@
+#[kwu]: 2020-10-15, github unity build test.
+
+name: unity-build
+
+on:
+  push:
+    # branches:
+    #   - master
+    #   - release
+    #   - test-github-actions
+    #   - test-unity-upgrade
+    #   - feat-tooth-reconstruct
+    #   - feat-segment
+    #   - feat-export
+    #   - feat-attachment
+    paths-ignore:
+      - '**/README.md'
+
+# [kwu]: securely add unity account info according to https://unity-ci.com/docs/github/activation
+# (1) Open Github > <Your repository> > Settings > Secrets
+# (2) Create the following secrets;
+# UNITY_SERIAL - (Add the code that looks like XX-XXXX-XXXX-XXXX-XXXX-XXXX)
+# UNITY_EMAIL - (Add the email address that you use to login to Unity)
+# UNITY_PASSWORD - (Add the password that you use to login to Unity)
+env:
+    UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+    UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+    UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+
+jobs:
+  Build:
+    name: Build Unity App
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+#         projectPath:
+#           - dentti-archform
+        unityVersion:
+          - 2020.1.8f1
+#         targetPlatform:
+#           - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
+#           - StandaloneWindows64 # Build a Windows 64-bit standalone.
+#           - StandaloneLinux64 # Build a Linux 64-bit standalone.
+#           - iOS # Build an iOS player.
+#           - WebGL # WebGL.
+    steps:
+      - uses: actions/checkout@v2 # checkout root
+      - name: Checkout repo root and submodules # checkout rest
+        shell: bash
+        run: |
+          # If your submodules are configured to use SSH instead of HTTPS please uncomment the following line
+          # git config --global url."https://github.com/".insteadOf "git@github.com:"
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+
+      # - uses: actions/cache@v1.1.0
+      #   with:
+      #     path: ${{ matrix.projectPath }}/Library
+      #     key: Library-${{ matrix.projectPath }}-StandaloneOSX}
+      #     restore-keys: |
+      #       Library-${{ matrix.projectPath }}-
+      #       Library-
+
+      - uses: webbertakken/unity-builder@v0.10
+        with:
+          #projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          targetPlatform: StandaloneOSX
+          #buildMethod: Builder.BuildOSX
+          #customParameters: '-myParameter myValue -myBoolean -ThirdParameter andItsValue'
+
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ${{ steps.make_package.outputs.build_file }}
+      #     path: ${{ steps.make_package.outputs.build_file }}
